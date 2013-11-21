@@ -1,0 +1,9 @@
+*.obj
+*.user
+*.pdb
+*.idp
+echo_service/Debug
+Debug
+obj
+*.ncb
+*.suo
