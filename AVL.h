@@ -1,98 +1,100 @@
 
-// int max(int a, int b)
-// {
-// 	return a > b? a : b;
-// }
+int max(int a, int b)
+{
+    return a > b ? a : b;
+}
 
 struct avl_node
 {
-	avl_node* l_child;
-	avl_node* r_child;
-	int val;
-	int height;
+    avl_node *l_child;
+    avl_node *r_child;
+    int val;
+    int height;
 };
 
-avl_node* create_node()
+avl_node *create_node()
 {
-	avl_node* p = (avl_node*)malloc(sizeof(avl_node));
-	p->l_child = p->r_child = NULL;
-	p->val = 0;
-	p->height = 1;
-	return p;
+    avl_node *p = (avl_node *)malloc(sizeof(avl_node));
+    p->l_child = p->r_child = NULL;
+    p->val = 0;
+    p->height = 1;
+    return p;
 }
 
-int height(avl_node* p)
+int height(avl_node *p)
 {
-	return p == NULL? 0 : p->height;
+    return p == NULL ? 0 : p->height;
 }
 
-void avl_right_rotate(avl_node*& k)
+void avl_right_rotate(avl_node *&k)
 {
-	avl_node* kl = k->l_child;
-	k->l_child = kl->r_child;
-	kl->r_child = k;
-	k->height = max(height(k->l_child), height(k->r_child)) + 1;;
-	kl->height = max(height(kl->l_child), k->height) + 1;
-	k = kl;
+    avl_node *kl = k->l_child;
+    k->l_child = kl->r_child;
+    kl->r_child = k;
+    k->height = max(height(k->l_child), height(k->r_child)) + 1;
+    ;
+    kl->height = max(height(kl->l_child), k->height) + 1;
+    k = kl;
 }
 
-void avl_left_rotate(avl_node*& k)
-{	
-	avl_node* kr = k->r_child;
-	k->r_child = kr->l_child;
-	kr->l_child = k;
-	k->height = max(height(k->l_child), height(k->r_child)) + 1;;
-	kr->height = max(k->height, height(k->r_child)) + 1;
-	k = kr;
-}
-
-void avl_insert(avl_node*& p, int n)
+void avl_left_rotate(avl_node *&k)
 {
-	if (!p)
-	{
-		p = create_node();
-		p->val = n;
-		return;
-	}
-	else if (n < p->val)
-	{
-		avl_insert(p->l_child, n);
-		if (height(p->l_child) - height(p->r_child) == 2)
-		{
-			if (n < p->l_child->val)
-			{
-				avl_right_rotate(p);
-			}
-			else
-			{
-				avl_left_rotate(p->l_child);
-				avl_right_rotate(p);
-			}
-		}
-	}
-	else if (n > p->val)
-	{
-		avl_insert(p->r_child, n);
-		if (height(p->r_child) - height(p->l_child) == 2)
-		{
-			if (n > p->r_child->val)
-			{
-				avl_left_rotate(p);
-			}
-			else
-			{
-				avl_right_rotate(p->r_child);
-				avl_left_rotate(p);
-			}
-		}
-	}
-	else
-	{}
-
-	p->height = max(height(p->l_child), height(p->r_child)) + 1;
+    avl_node *kr = k->r_child;
+    k->r_child = kr->l_child;
+    kr->l_child = k;
+    k->height = max(height(k->l_child), height(k->r_child)) + 1;
+    ;
+    kr->height = max(k->height, height(k->r_child)) + 1;
+    k = kr;
 }
 
-// 使用平衡因子
+void avl_insert(avl_node *&p, int n)
+{
+    if (!p)
+    {
+        p = create_node();
+        p->val = n;
+        return;
+    }
+    else if (n < p->val)
+    {
+        avl_insert(p->l_child, n);
+        if (height(p->l_child) - height(p->r_child) == 2)
+        {
+            if (n < p->l_child->val)
+            {
+                avl_right_rotate(p);
+            }
+            else
+            {
+                avl_left_rotate(p->l_child);
+                avl_right_rotate(p);
+            }
+        }
+    }
+    else if (n > p->val)
+    {
+        avl_insert(p->r_child, n);
+        if (height(p->r_child) - height(p->l_child) == 2)
+        {
+            if (n > p->r_child->val)
+            {
+                avl_left_rotate(p);
+            }
+            else
+            {
+                avl_right_rotate(p->r_child);
+                avl_left_rotate(p);
+            }
+        }
+    }
+    else
+    {
+    }
+
+    p->height = max(height(p->l_child), height(p->r_child)) + 1;
+}
+
 enum BalanceFactor
 {
     LH, // Left Higher
@@ -102,41 +104,41 @@ enum BalanceFactor
 
 struct AVLNode
 {
-    AVLNode* left;
-    AVLNode* right;
+    AVLNode *left;
+    AVLNode *right;
     int key;
     BalanceFactor bf;
 };
 
-AVLNode* CreateAVLNode()
+AVLNode *CreateAVLNode()
 {
-    AVLNode* p = (AVLNode*)malloc(sizeof(AVLNode));
+    AVLNode *p = (AVLNode *)malloc(sizeof(AVLNode));
     p->left = p->right = NULL;
     p->key = 0;
     p->bf = EH;
     return p;
 }
 
-void LeftRotate(AVLNode*& k0)
+void LeftRotate(AVLNode *&k0)
 {
-    AVLNode* k1 = k0->right;
+    AVLNode *k1 = k0->right;
     k0->right = k1->left;
     k1->left = k0;
     k0 = k1;
 }
 
-void RightRotate(AVLNode*& k0)
+void RightRotate(AVLNode *&k0)
 {
-    AVLNode* k1 = k0->left;
+    AVLNode *k1 = k0->left;
     k0->left = k1->right;
     k1->right = k0;
     k0 = k1;
 }
 
-void LeftBalance(AVLNode*& k0)
+void LeftBalance(AVLNode *&k0)
 {
-    AVLNode*& k1 = k0->left;
-    AVLNode*& k2 = k1->right;
+    AVLNode *&k1 = k0->left;
+    AVLNode *&k2 = k1->right;
     switch (k1->bf)
     {
     case LH:
@@ -162,13 +164,15 @@ void LeftBalance(AVLNode*& k0)
         LeftRotate(k1);
         RightRotate(k0);
         break;
+    default:
+        break;
     }
 }
 
-void RightBalance(AVLNode*& k0)
+void RightBalance(AVLNode *&k0)
 {
-    AVLNode*& k1 = k0->right;
-    AVLNode*& k2 = k1->left;
+    AVLNode *&k1 = k0->right;
+    AVLNode *&k2 = k1->left;
     switch (k1->bf)
     {
     case RH:
@@ -194,10 +198,12 @@ void RightBalance(AVLNode*& k0)
         RightRotate(k1);
         LeftRotate(k0);
         break;
+    default:
+        break;
     }
 }
 
-bool AVLInsert(AVLNode*& r, int key, bool& taller)
+bool AVLInsert(AVLNode *&r, int key, bool &taller)
 {
     if (r == NULL)
     {
@@ -211,7 +217,7 @@ bool AVLInsert(AVLNode*& r, int key, bool& taller)
             return false;
         if (taller)
         {
-            switch(r->bf)
+            switch (r->bf)
             {
             case LH:
                 LeftBalance(r);
@@ -226,7 +232,7 @@ bool AVLInsert(AVLNode*& r, int key, bool& taller)
                 taller = false;
                 break;
             }
-        }    
+        }
     }
     else if (key > r->key)
     {
@@ -234,7 +240,7 @@ bool AVLInsert(AVLNode*& r, int key, bool& taller)
             return false;
         if (taller)
         {
-            switch(r->bf)
+            switch (r->bf)
             {
             case LH:
                 r->bf = EH;
@@ -249,7 +255,7 @@ bool AVLInsert(AVLNode*& r, int key, bool& taller)
                 taller = false;
                 break;
             }
-        }    
+        }
     }
     else
     {
@@ -259,10 +265,3 @@ bool AVLInsert(AVLNode*& r, int key, bool& taller)
 
     return true;
 }
-
-
-
-
-
-
-

@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 
-int index(char* s, char* t)
+int index(char *s, char *t)
 {
     int ns = (int)strlen(s);
     int nt = (int)strlen(t);
@@ -30,7 +30,7 @@ int index(char* s, char* t)
     return -1;
 }
 
-void get_next(char* s, int *next)
+void get_next(const char *s, int *next)
 {
     int j = -1;
     next[0] = j;
@@ -41,13 +41,13 @@ void get_next(char* s, int *next)
             j = next[j];
         j++;
         if (s[i] == s[j])
-			next[i] = next[j];
+            next[i] = next[j];
         else
-			next[i] = j;
+            next[i] = j;
     }
 }
 
-int index_kmp(char* s, char* t)
+int index_kmp(const char *s, const char *t)
 {
     int next[255];
     get_next(t, next);

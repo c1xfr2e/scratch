@@ -1,8 +1,8 @@
 
-#include <windows.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "common.h"
 #include "insert_sort.h"
 #include "bubble.h"
@@ -32,7 +32,7 @@
 #include <vector>
 typedef std::vector<int> SearchResult;
 
-void SearchTree(AVL_Node* p, int key1, bool& b_key1, int key2, bool& b_key2, SearchResult& res1, SearchResult& res2)
+void SearchTree(AVL_Node *p, int key1, bool &b_key1, int key2, bool &b_key2, SearchResult &res1, SearchResult &res2)
 {
     if (p == NULL)
         return;
@@ -76,64 +76,61 @@ void SearchTree(AVL_Node* p, int key1, bool& b_key1, int key2, bool& b_key2, Sea
 
 int main()
 {
-  DoTreeTravel();
+    DoTreeTravel();
 
-	int i = 0;
-	int f = factorial(i);
+    int i = 0;
+    int f = factorial(i);
 
-	unsigned long size = 1024*1024*1024;
-	char* mem = new char[size];
-	DWORD time = timeGetTime();
-	memset(mem, 'A', size);
-	DWORD duration = timeGetTime() - time;
-	printf("%d ", duration);
+    unsigned long size = 1024 * 1024 * 1024;
+    char *mem = new char[size];
+    long tm = time(NULL);
+    memset(mem, 'A', size);
+    long duration = time(NULL) - tm;
+    printf("%ld ", duration);
 
-	do_reverse_list();
+    do_reverse_list();
 
+    CircularLinkQueue qu;
+    int queuedata[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+    for (int i = 0; i < sizeof(queuedata) / sizeof(queuedata[0]); ++i)
+        qu.enqueue(queuedata[i]);
+    while (!qu.empty())
+    {
+        printf("%d ", qu.dequeue());
+    }
 
-	CircularLinkQueue qu;
-	int queuedata[] = {10,9,8,7,6,5,4,3,2,1,0};
-	for (int i = 0; i < _countof(queuedata); ++i)
-		qu.enqueue(queuedata[i]);
-	while (!qu.empty())
-	{
-		printf("%d ", qu.dequeue());
-	}
+    memset(queuedata, 0, sizeof(queuedata));
 
-	memset(queuedata, 0, sizeof(queuedata));
+    int nodedata[] = {2000, 9, 8, 7, 2, 2, 6, 2, 5, 4, 3, 2, 1, 0, 2, 2, 1000};
+    Node *cur = NULL;
+    for (int i = 0; i < sizeof(nodedata) / sizeof(nodedata[0]); ++i)
+    {
+        Node *newnode = new Node(nodedata[i]);
+        newnode->next = cur;
+        cur = newnode;
+    }
 
-	int nodedata[] = {2000,9,8,7,2,2,6,2,5,4,3,2,1,0,2,2, 1000};
-	Node* cur = NULL;
-	for (int i = 0; i < _countof(nodedata); ++i)
-	{
-		Node* newnode =  new Node(nodedata[i]);
-		newnode->next = cur;
-		cur = newnode;
-	}
+    Node *new_Node = new Node(222);
+    new_Node->next = (Node *)0x12345678;
+    List_InsertAfter(cur->next->next->next->next, new_Node);
+    List_Print(cur);
 
-	Node* new_Node = new Node(222);
-	new_Node->next = (Node*)0x12345678;
-	List_InsertAfter(cur->next->next->next->next, new_Node);
-	List_Print(cur);
+    printf("\n");
 
-	printf("\n");
+    List_RemoveKey(cur, 2);
+    List_Print(cur);
 
-	List_RemoveKey(cur, 2);
-	List_Print(cur);
+    printf("\n%d %d\n", List_GetMax(cur)->data, List_GetMaxRecursively(cur)->data);
 
-	printf("\n%d %d\n", List_GetMax(cur)->data, List_GetMaxRecursively(cur)->data);
+    int test[] = {5, 2, 1, 7, 8, 3, 6, 4, 0};
+    int k = select(test, sizeof(test) / sizeof(test[0]), 4);
 
-    int test[] = {5,2,1,7,8,3,6,4,0};
-    int k = select(test, _countof(test), 4);
-    
-    
-    
     int pivot = ITA_partition(test, 0, 7);
 
-    int seq[] = {1,2,3,4,5,6,7,8};
-    rotate_recursive(seq, 0, 6, _countof(seq));
+    int seq[] = {1, 2, 3, 4, 5, 6, 7, 8};
+    rotate_recursive(seq, 0, 6, sizeof(seq) / sizeof(seq[0]));
 
-    hash h;
+    ::hash h;
     hash_init(&h);
     for (int i = 0; i < 32; ++i)
     {
@@ -143,7 +140,7 @@ int main()
             printf("%d ", i);
         }
     }
-    
+
     printf("\n");
     hash_delete(&h, 1);
     hash_delete(&h, 13);
@@ -160,84 +157,81 @@ int main()
 
     Travel(0);
 
-    AVL_Node* avl_root_1 = NULL;
+    AVL_Node *avl_root_1 = NULL;
     int x[] = {100, 50, 150, 30, 80, 120, 200, 40, 60, 90, 110, 130, 180, 250,
-        95, 140, 190, 220, 300, 350};
-	for (int i = 0; i < _countof(x); ++i)
-	{
+               95, 140, 190, 220, 300, 350};
+    for (int i = 0; i < sizeof(x) / sizeof(x[0]); ++i)
+    {
         AVL_Insert(avl_root_1, x[i]);
-	}
+    }
 
     AVL_Delete(avl_root_1, 40);
-    
+
     bool b_key1 = false, b_key2 = false;
     SearchResult res1, res2;
     SearchTree(avl_root_1, 30, b_key1, 95, b_key2, res1, res2);
 
-
     int y[10] = {3, 2, 1, 4, 5, 6, 7, 10, 9, 8};
     bool taller = false;
-    AVLNode* avl_root = NULL;
-    for (int i = 0; i < _countof(y); ++i)
+    AVLNode *avl_root = NULL;
+    for (int i = 0; i < sizeof(y) / sizeof(y[0]); ++i)
     {
         AVLInsert(avl_root, y[i], taller);
     }
 
-	BTNode* root = new BTNode;
-	root->data = 50;
-	BST_Insert(root, 40);
-	BST_Insert(root, 30);
-	BST_Insert(root, 45);
-	BST_Insert(root, 80);
-	BST_Insert(root, 70);
-	BST_Insert(root, 90);
-	post_t(root);  
+    BTNode *root = new BTNode;
+    root->data = 50;
+    BST_Insert(root, 40);
+    BST_Insert(root, 30);
+    BST_Insert(root, 45);
+    BST_Insert(root, 80);
+    BST_Insert(root, 70);
+    BST_Insert(root, 90);
+    post_t(root);
 
     printf("\n\n");
 
-    BTNode* root_copy = travel_2(root);
-    post_t(root_copy);  
+    BTNode *root_copy = travel_2(root);
+    post_t(root_copy);
 
     int heap[] = {1, 50, 30, 40, 10, 5, 8, 20, 2, 2, 23, 4555, 6, 7};
-    insert_sort_2(heap, heap+_countof(heap));
+    insert_sort_2(heap, heap + sizeof(heap) / sizeof(heap[0]));
 
     int p[] = {1, 1, 1, 1, 22, 22, 22, 22, 3, 3, 4, 4};
-    int new_len = unique(p, _countof(p));
+    int new_len = unique(p, sizeof(p) / sizeof(p[0]));
 
-	do_reverse_list();
-	do_sort_list();
+    do_reverse_list();
+    do_sort_list();
 
     int a[] = {1, 34, 6, 323, 2, 3, 67, 13, 98, 32, 55};
-    quick_sort_1(a, 0, _countof(a) - 1);
+    quick_sort_1(a, 0, sizeof(a) / sizeof(a[0]) - 1);
 
     int b[100];
-    for (int i = 0; i < _countof(b); ++i)
+    for (int i = 0; i < sizeof(b) / sizeof(b[0]); ++i)
     {
         b[i] = 100 - i;
     }
-    quick_sort_1(b, 0, _countof(b) - 1);
+    quick_sort_1(b, 0, sizeof(b) / sizeof(b[0]) - 1);
 
-	int m2[] = {51, 1, 3, 3, 3, 5, 77, 300, 2, 51, 4, 53, 6, 8, 10, 100, 50};
-	//quick_sort_2(m2, _countof(m2));
+    int m2[] = {51, 1, 3, 3, 3, 5, 77, 300, 2, 51, 4, 53, 6, 8, 10, 100, 50};
+    //quick_sort_2(m2, sizeof(m2)/sizeof(m2[0]));
 
     char rpn[30];
     To_ReversePolishNotation("9+(3-1)*3+2/2", rpn);
-    int n = ToValue(rpn); 
+    int n = ToValue(rpn);
 
-	int ttt[] = {100, 77, 300, 50};
-	int* mm = part(ttt, ttt + 4, ttt);
-
+    int ttt[] = {100, 77, 300, 50};
+    int *mm = part(ttt, ttt + 4, ttt);
 
     int result = index_kmp("xxx_ababaaab_yyy_ababaaaba_zzz", "ababaaaba");
 
-	int k_result = getk(m2, m2 + _countof(m2), 16, m2);
+    int k_result = getk(m2, m2 + sizeof(m2) / sizeof(m2[0]), 16, m2);
 
-	for (int i = 0; i < _countof(m2); ++i)
-	{
-		printf("%d ", getk(m2, m2 + _countof(m2), i, m2));
-	}
-	printf("\n");
-
+    for (int i = 0; i < sizeof(m2) / sizeof(m2[0]); ++i)
+    {
+        printf("%d ", getk(m2, m2 + sizeof(m2) / sizeof(m2[0]), i, m2));
+    }
+    printf("\n");
 
     return 0;
 }

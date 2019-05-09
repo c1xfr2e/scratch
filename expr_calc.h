@@ -5,34 +5,34 @@ struct Stack
     char data[30];
 };
 
-void Stack_Init(Stack* s)
+void Stack_Init(Stack *s)
 {
     s->top = -1;
 }
 
-void Stack_Push(Stack* s, char c)
+void Stack_Push(Stack *s, char c)
 {
     s->data[++s->top] = c;
 }
 
-void Stack_Pop(Stack* s)
+void Stack_Pop(Stack *s)
 {
     s->top--;
 }
 
-char Stack_Top(Stack* s)
+char Stack_Top(Stack *s)
 {
     return s->data[s->top];
 }
 
-int Stack_IsEmpty(Stack* s)
+int Stack_IsEmpty(Stack *s)
 {
-    return s->top == -1? 1:0;
+    return s->top == -1 ? 1 : 0;
 }
 
 int Priority(char operand)
 {
-    switch(operand)
+    switch (operand)
     {
     case '+':
     case '-':
@@ -50,13 +50,13 @@ int IsDigit(int c)
     return c >= (int)'0' && c <= (int)'9';
 }
 
-void To_ReversePolishNotation(char* expr, char* out)
+void To_ReversePolishNotation(const char *expr, char *out)
 {
     Stack s;
     Stack_Init(&s);
     int i = 0, j = 0;
     char tok;
-    while (tok = expr[i++])
+    while ((tok = expr[i++]))
     {
         switch (tok)
         {
@@ -141,14 +141,14 @@ void To_ReversePolishNotation(char* expr, char* out)
     out[j] = '\0';
 }
 
-int ToValue(char* rpn)
+int ToValue(char *rpn)
 {
     int operand[30];
     int top = -1;
     char c;
     int i = 0;
     int val = 0;
-    while (c = rpn[i++])
+    while ((c = rpn[i++]))
     {
         switch (c)
         {
